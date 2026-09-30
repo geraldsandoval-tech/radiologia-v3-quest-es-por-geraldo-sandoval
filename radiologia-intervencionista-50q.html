@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Radiologia Intervencionista — 50 questões</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --ink:#000000;
+  --navy:#0A2342;
+  --blue:#1B4F8C;
+  --blue-soft:#E3ECF7;
+  --bg:#F3F5F8;
+  --surface:#FFFFFF;
+  --text:#132033;
+  --muted:#586779;
+  --line:#D6DEE8;
+  --ok:#17744A;
+  --ok-soft:#E2F3EA;
+  --bad:#B3261E;
+  --bad-soft:#FBE7E5;
+  --pick:#1B4F8C;
+  --head-font:"Barlow Semi Condensed","Arial Narrow",Arial,sans-serif;
+  --body-font:"Source Sans 3","Segoe UI",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --blue:#7FB0EC;--blue-soft:#12243B;--bg:#070B12;--surface:#0E1623;--text:#E4EBF4;
+    --muted:#9AA8B8;--line:#223044;--ok:#5FD39A;--ok-soft:#0F2A1E;--bad:#FF8A80;--bad-soft:#2E1414;--pick:#7FB0EC;
+  }
+}
+:root[data-theme="dark"]{
+  --blue:#7FB0EC;--blue-soft:#12243B;--bg:#070B12;--surface:#0E1623;--text:#E4EBF4;
+  --muted:#9AA8B8;--line:#223044;--ok:#5FD39A;--ok-soft:#0F2A1E;--bad:#FF8A80;--bad-soft:#2E1414;--pick:#7FB0EC;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body-font);font-size:17px;line-height:1.55}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+/* Cabeçalho estilo tela de estação de laudo */
+.masthead{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.masthead-inner{max-width:980px;margin:0 auto;padding:28px 24px 36px;position:relative}
+.overlay{position:absolute;font-family:var(--head-font);font-size:13px;letter-spacing:.02em;color:#7C93B3;line-height:1.35}
+.overlay.tl{top:14px;left:24px}
+.overlay.tr{top:14px;right:24px;text-align:right}
+.masthead h1{font-family:var(--head-font);font-weight:700;font-size:clamp(34px,6vw,58px);line-height:1;margin:18px 0 10px;letter-spacing:-.01em}
+.masthead p{margin:0;color:#B9C7DA;max-width:62ch}
+.crosshair{position:absolute;right:28px;bottom:22px;width:64px;height:64px;opacity:.55}
+
+.statusbar{background:var(--navy);color:#fff;position:sticky;top:0;z-index:10;padding-top:0}
+.statusbar-inner{max-width:980px;margin:0 auto;padding:12px 24px;display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center}
+.stat{font-family:var(--head-font);font-size:16px;color:#C9D6E8}
+.stat b{color:#fff;font-size:20px;font-weight:700;margin-right:3px}
+.bar{flex:1 1 160px;height:6px;background:#1D3A60;border-radius:3px;overflow:hidden;min-width:120px}
+.bar span{display:block;height:100%;width:0;background:#8DB8F0;transition:width .3s}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid #3B5A82;background:transparent;color:#fff;border-radius:4px;padding:6px 12px;font-family:var(--head-font);font-size:15px;cursor:pointer}
+.btn:hover{background:#15335A}
+.btn.primary{background:#fff;color:var(--navy);border-color:#fff;font-weight:600}
+.btn.primary:hover{background:#DCE7F5}
+
+.wrap{max-width:980px;margin:0 auto;padding:24px}
+.toolbar{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{border:1px solid var(--line);background:var(--surface);border-radius:4px;padding:6px 12px;cursor:pointer;font-size:15px;color:var(--muted)}
+.tab[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.mode{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--muted)}
+.mode select{font:inherit;padding:5px 8px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--text)}
+
+.map{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:5px;margin:0 0 28px}
+.map a{display:flex;align-items:center;justify-content:center;height:32px;border:1px solid var(--line);border-radius:3px;background:var(--surface);color:var(--muted);text-decoration:none;font-family:var(--head-font);font-size:14px}
+.map a.answered{border-color:var(--pick);color:var(--pick);font-weight:700}
+.map a.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.map a.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+
+.module-title{font-family:var(--head-font);font-weight:700;font-size:26px;color:var(--navy);margin:36px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--navy)}
+:root[data-theme="dark"] .module-title{color:var(--blue);border-color:var(--blue)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .module-title{color:var(--blue);border-color:var(--blue)}}
+
+.q{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:4px;padding:20px 22px;margin:0 0 18px}
+.q-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin-bottom:10px}
+.q-num{font-family:var(--head-font);font-weight:700;font-size:22px;color:var(--ink)}
+:root[data-theme="dark"] .q-num{color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .q-num{color:#fff}}
+.q-topic{font-size:14px;color:var(--blue)}
+.stem{margin:0 0 14px;max-width:75ch}
+.stem strong{font-weight:700}
+.opts{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.opt{width:100%;text-align:left;display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);background:transparent;border-radius:4px;padding:10px 12px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--blue);background:var(--blue-soft)}
+.opt .l{flex:0 0 26px;height:26px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-family:var(--head-font);font-weight:700;font-size:14px}
+.opt.picked{border-color:var(--pick);background:var(--blue-soft)}
+.opt.picked .l{background:var(--pick);border-color:var(--pick);color:var(--surface)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right .l{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .l{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt:disabled{cursor:default}
+.fb{display:none;margin-top:14px;padding:12px 14px;border-radius:4px;background:var(--blue-soft);font-size:16px}
+.fb.show{display:block}
+.fb b{font-family:var(--head-font);font-size:17px}
+.fb .verdict-ok{color:var(--ok)}
+.fb .verdict-bad{color:var(--bad)}
+
+.result{display:none;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--navy);border-radius:4px;padding:22px;margin:30px 0}
+.result.show{display:block}
+.result h2{font-family:var(--head-font);margin:0 0 8px;font-size:26px}
+.result table{border-collapse:collapse;width:100%;font-size:15px;margin-top:12px}
+.result th,.result td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+.scroll{overflow-x:auto}
+footer{color:var(--muted);font-size:14px;padding:10px 24px 40px;max-width:980px;margin:0 auto}
+@media (max-width:600px){
+  .masthead-inner{padding:22px 18px 30px}
+  .overlay.tr{display:none}
+  .wrap{padding:18px 14px}
+  .q{padding:16px 14px}
+  .statusbar-inner{padding:10px 14px}
+}
+@media (prefers-reduced-motion:reduce){.bar span{transition:none}}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-inner">
+    <h1>Radiologia Intervencionista</h1>
+    <p>Bateria de 50 casos clínicos inéditos, distribuídos pelos 20 pontos do roteiro de prova. Escolha uma alternativa para ver o comentário, ou troque para o modo prova e corrija tudo no final.</p>
+    <svg class="crosshair" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="20" fill="none" stroke="#3A6AA8" stroke-width="1.5"/><path d="M32 2v18M32 44v18M2 32h18M44 32h18" stroke="#3A6AA8" stroke-width="1.5"/></svg>
+  </div>
+</header>
+
+<div class="statusbar" role="region" aria-label="Progresso">
+  <div class="statusbar-inner">
+    <span class="stat"><b id="sAns">0</b>/50 respondidas</span>
+    <span class="stat"><b id="sOk">0</b>acertos</span>
+    <span class="stat"><b id="sPct">–</b>aproveitamento</span>
+    <div class="bar" aria-hidden="true"><span id="sBar"></span></div>
+    <div class="ctrls">
+      <button class="btn primary" id="finish">Corrigir prova</button>
+      <button class="btn" id="reset">Recomeçar</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toolbar">
+    <div class="tabs" id="tabs" role="group" aria-label="Filtrar por módulo"></div>
+    <label class="mode">Correção
+      <select id="mode">
+        <option value="study">imediata (modo estudo)</option>
+        <option value="exam">no final (modo prova)</option>
+      </select>
+    </label>
+  </div>
+  <nav class="map" id="map" aria-label="Mapa das questões"></nav>
+  <div id="list"></div>
+  <section class="result" id="result" aria-live="polite"></section>
+</main>
+<footer>Material de estudo elaborado a partir do roteiro de sala. Condutas farmacológicas e protocolos devem ser conferidos com diretrizes atualizadas.</footer>
+
+<script>
+const MODULES=["Conceitos, equipe, anatomia e hemodinâmica","Angioplastia, angiografia e stents","Contrastes e PMMA","Equipamentos, proteção e riscos"];
+const T={1:"Objetivos da RI",2:"Vantagens da RI (stent × ponte de safena)",3:"Equipe multidisciplinar",4:"Radiografia × fluoroscopia",5:"Coronárias, artérias × veias, cateterismo",6:"Músculo que divide o tronco",7:"Hemodinâmica",8:"Angioplastia: conceito e técnica",9:"Angioplastia: processo e pós",10:"Angiografia",11:"Stent convencional × farmacológico (e neuro)",12:"Classificação dos contrastes",13:"Contraindicações dos contrastes",14:"Contraste negativo",15:"PMMA e síndrome do cimento ósseo",16:"Arco cirúrgico (fluoroscópio)",17:"Proteção radiológica",18:"EPIs",19:"Riscos da RI (parte 1)",20:"Riscos de procedimentos de intervenção"};
+// [módulo, item do roteiro, enunciado, alternativas, índice correto, comentário]
+const Q=[[0,1,"Homem de 58 anos, cirrótico Child B, apresenta nódulo hepático de 2,8 cm com realce arterial e lavagem tardia. Tem alto risco anestésico. A equipe propõe <strong>biópsia percutânea guiada por imagem</strong> e, confirmado o diagnóstico, <strong>quimioembolização transarterial</strong>. Um interno pergunta qual princípio define a especialidade que fará ambos os procedimentos. A melhor resposta é:",["Diagnosticar e tratar por acesso minimamente invasivo, guiado por imagem em tempo real.","Substituir os exames diagnósticos por procedimentos terapêuticos invasivos de rotina.","Realizar cirurgias abertas com apoio de imagem intraoperatória para reduzir o sangramento.","Restringir-se ao tratamento paliativo quando a cirurgia convencional for impossível."],0,"A RI reúne procedimentos diagnósticos (biópsia) e terapêuticos (quimioembolização) feitos por punção ou cateter, guiados por imagem. Não é cirurgia aberta (C), não se limita à paliação (D) e não substitui o diagnóstico por imagem (B)."],
+[0,1,"Puérpera de 34 anos mantém <strong>hemorragia pós-parto</strong> apesar de uterotônicos e massagem uterina. Hemodinamicamente estabilizada com volume, é levada à sala de hemodinâmica para <strong>embolização das artérias uterinas</strong>, com controle do sangramento e útero preservado. Esse desfecho exemplifica qual objetivo da radiologia intervencionista?",["Substituir a reposição volêmica pela oclusão vascular como medida inicial isolada.","Confirmar o diagnóstico por imagem, reservando o tratamento definitivo à cirurgia.","Tratar a causa com preservação do órgão, evitando uma histerectomia de urgência.","Evitar a radiação ionizante, já que a embolização dispensa a fluoroscopia."],2,"A embolização resolve a causa com mínima agressão e preserva o útero — objetivo típico da RI. Ela complementa (não substitui) a reposição volêmica (A) e depende de fluoroscopia (D)."],
+[0,2,"Homem de 67 anos, diabético, com angina estável limitante. A cineangiocoronariografia mostra <strong>lesão única de 85% na descendente anterior proximal</strong>, anatomia favorável. O heart team compara <strong>angioplastia com stent</strong> e <strong>revascularização com ponte de safena</strong>. Qual vantagem é corretamente atribuída à intervenção percutânea?",["Dispensa antiagregantes, pois o stent elimina o risco de trombose arterial.","Tem durabilidade superior em qualquer anatomia, inclusive multiarterial complexa.","Evita o contraste iodado, pois o cateter é guiado apenas por fluoroscopia.","Acesso por punção, anestesia local, alta precoce e retorno rápido às atividades."],3,"Stent × ponte de safena: a angioplastia evita toracotomia, usa punção e anestesia local, com internação curta e recuperação rápida. Ainda exige antiagregação (A) e contraste (C); na doença multiarterial complexa a cirurgia pode ser superior (B)."],
+[0,2,"Mulher de 82 anos, frágil, com <strong>DPOC grave</strong> em oxigênio domiciliar, é internada por infarto sem supradesnivelamento do ST. Há lesão crítica tratável por via percutânea. O cirurgião cardíaco contraindica esternotomia. O principal argumento a favor da angioplastia nesse contexto é que ela:",["Utiliza enxertos venosos, mais resistentes à aterosclerose.","Garante patência definitiva, sem risco algum de reestenose.","Evita esternotomia, circulação extracorpórea e anestesia geral.","Elimina a exposição à radiação do paciente e da equipe."],2,"Em paciente de alto risco cirúrgico, a vantagem decisiva é a menor agressão: sem esternotomia, sem CEC, sem anestesia geral. Reestenose continua possível (B), enxertos são da cirurgia (A) e há radiação (D)."],
+[0,3,"Durante embolização hepática sob <strong>sedação consciente</strong>, sem anestesista presente, o radiologista está concentrado na navegação do microcateter. O paciente fica sonolento, a SpO₂ cai para 89% e há prescrição de medicação de resgate. Qual profissional tem, por função, monitorar continuamente o paciente e administrar o que foi prescrito?",["A equipe de enfermagem, que monitora sinais vitais e administra o prescrito.","O físico médico, que ajusta a sedação conforme a dose de radiação acumulada.","O instrumentador, que deve deixar o campo estéril para medicar o paciente.","O técnico em radiologia, que opera o arco e também prescreve os fármacos."],0,"A enfermagem monitora sinais vitais, administra medicações prescritas e assiste o paciente. O técnico opera o equipamento e zela pela proteção radiológica, sem prescrever (D); o instrumentador mantém o campo estéril (C)."],
+[0,3,"Uma auditoria no serviço de hemodinâmica encontra <strong>doses de pele acima do esperado</strong>, imagens com ruído e ausência de testes periódicos no arco em C. A direção precisa designar o profissional responsável por dosimetria, controle de qualidade do equipamento e protocolos de otimização. Esse profissional é o:",["Enfermeiro, responsável pela calibração do gerador e pela revisão do tubo.","Físico médico, responsável por dosimetria, controle de qualidade e otimização.","Anestesista, responsável por definir os protocolos de dose da fluoroscopia.","Instrumentador, responsável por aferir a filtração e a colimação do arco."],1,"O físico médico cuida de dosimetria, testes de constância, controle de qualidade e otimização de protocolos. A questão reforça que a RI depende de equipe multidisciplinar — por isso a alternativa que exclui os demais profissionais está errada."],
+[0,4,"No mesmo plantão, o técnico realiza (1) <strong>radiografia de tórax em PA</strong> num paciente com suspeita de pneumonia e (2) acompanha, no arco em C, a <strong>progressão do cateter</strong> numa angioplastia. Qual afirmação diferencia corretamente os dois métodos?",["A radiografia usa radiação contínua; a fluoroscopia, um disparo breve.","A fluoroscopia dispensa raios X e utiliza ondas sonoras de alta frequência.","A radiografia gera imagem estática; a fluoroscopia, imagem em tempo real.","A radiografia exige arco em C; a fluoroscopia usa equipamento fixo de parede."],2,"Radiografia: exposição única, imagem estática. Fluoroscopia: exposição contínua ou pulsada, imagem em movimento, em tempo real — o que permite guiar fios e cateteres. Ambas usam raios X (B)."],
+[0,4,"Após embolização de 45 minutos de fluoroscopia, um residente estranha que a <strong>dose acumulada</strong> seja muito maior que a de uma radiografia, já que cada quadro fluoroscópico usa miliamperagem baixa. A explicação correta é que:",["A exposição é contínua ou pulsada ao longo de todo o procedimento.","O intensificador de imagem gera radiação própria, somada à do tubo.","A fluoroscopia usa radiação não ionizante de maior poder de penetração.","A fluoroscopia usa alta mA em disparo único, tal como na radiografia."],0,"Cada quadro tem baixa mA, mas a exposição se prolonga por minutos, somando dose. O intensificador apenas converte a imagem (B) e os raios X são ionizantes (C)."],
+[0,5,"Homem de 55 anos chega com dor precordial há 2 horas e <strong>supradesnivelamento do ST de V1 a V4</strong>. É levado ao cateterismo. Qual artéria tem maior probabilidade de estar ocluída?",["Circunflexa, ramo da coronária direita.","Descendente anterior, ramo da coronária esquerda.","Carótida comum esquerda, em sua bifurcação.","Marginal aguda, ramo da descendente anterior."],1,"V1–V4 = parede anterior, território da descendente anterior (interventricular anterior), ramo do tronco da coronária esquerda junto com a circunflexa. A circunflexa não nasce da direita (A); a marginal aguda é ramo da coronária direita (D); carótida não irriga o coração (C)."],
+[0,5,"Paciente agendado para <strong>cateterismo cardíaco</strong> pergunta à estudante de enfermagem se o médico vai “desentupir a artéria do pescoço que o outro médico viu no ultrassom”. A orientação correta é:",["Sim, o cateterismo cardíaco avalia as carótidas, que irrigam o miocárdio.","Não, o exame avalia as veias coronárias, que levam sangue arterial ao coração.","Não, o exame estuda as coronárias; as carótidas irrigam cabeça e pescoço.","Não, o cateterismo cardíaco estuda somente as câmaras e as valvas cardíacas."],2,"Cateterismo cardíaco = estudo das artérias coronárias. Carótidas irrigam cabeça e pescoço e são avaliadas por outros exames. Confundir coronária com carótida é o erro que o roteiro alerta."],
+[0,5,"Na tentativa de punção da artéria femoral para angiografia, o operador obtém pelo introdutor <strong>sangue escuro, com fluxo lento, contínuo e não pulsátil</strong>. A interpretação correta é:",["Punção arterial: artérias levam sangue desoxigenado ao coração sob baixa pressão.","Punção arterial: o sangue escuro indica apenas que o paciente está hipoxêmico.","Punção venosa: veias retornam o sangue ao coração, com menor pressão e sem pulso.","Punção venosa: veias levam sangue oxigenado do coração aos tecidos periféricos."],2,"Veias devolvem sangue ao coração, sob baixa pressão e sem pulso; artérias levam sangue do coração aos tecidos, com fluxo pulsátil e pressão elevada. O operador deve redirecionar a agulha."],
+[0,6,"Após biópsia percutânea hepática, a radiografia de tórax em ortostase mostra <strong>ar livre em crescente</strong> logo abaixo de uma estrutura muscular em cúpula que separa o tórax do abdome. Essa estrutura é o músculo:",["Diafragma.","Transverso do tórax.","Intercostal interno.","Reto do abdome."],0,"O diafragma é o músculo em cúpula que divide o tronco em cavidades torácica e abdominal. Ar sob as cúpulas indica pneumoperitônio."],
+[0,6,"Na <strong>angiografia digital por subtração</strong> da aorta abdominal, o técnico pede ao paciente que prenda a respiração. Mesmo assim, uma inspiração súbita gera artefato de desregistro na imagem subtraída. A estrutura cuja movimentação causou o artefato, e que divide o tronco, é:",["A pleura parietal, músculo que divide o tronco em frente e dorso.","O pericárdio, membrana que separa o coração da cavidade abdominal.","O mediastino, músculo que separa os pulmões direito e esquerdo.","O diafragma, músculo que separa as cavidades torácica e abdominal."],3,"A contração do diafragma na inspiração desloca vísceras e vasos, gerando desregistro na subtração. Pericárdio, mediastino, peritônio e pleura não são músculos."],
+[0,7,"Paciente de 61 anos, com dispneia e sopro sistólico, é encaminhado ao <strong>setor de hemodinâmica</strong> para medir pressões intracavitárias e estudar o fluxo coronariano antes de uma troca valvar. O conceito central que dá nome a esse setor é o estudo:",["Das células sanguíneas e da coagulação, feito por hemograma e coagulograma.","Da morfologia estática dos vasos, feito por radiografia simples de tórax.","Do fluxo e das pressões do sangue, com cateteres e contraste.","Da atividade elétrica cardíaca, feito por eletrocardiograma de repouso."],2,"Hemodinâmica é o estudo do movimento do sangue e das pressões na circulação. No laboratório, isso se faz com cateteres, manometria e contraste sob fluoroscopia."],
+[0,7,"Na suspeita de <strong>estenose aórtica</strong> com ecocardiograma discordante, o cardiologista solicita avaliação invasiva do gradiente transvalvar. Como o laboratório de hemodinâmica estuda a circulação nesse caso?",["Por punção venosa periférica e dosagem seriada de enzimas cardíacas.","Por ultrassonografia transabdominal com o paciente em jejum de oito horas.","Por radiografia de tórax em inspiração e expiração profundas, sem contraste.","Por cateteres sob fluoroscopia, medindo pressões e injetando contraste."],3,"O estudo hemodinâmico invasivo leva cateteres às câmaras e vasos sob fluoroscopia, registra pressões e gradientes e injeta contraste para visualizar fluxo e anatomia."],
+[1,8,"Homem de 63 anos, tabagista, com <strong>claudicação intermitente</strong> a 100 metros. A angiotomografia mostra estenose focal de 80% na artéria ilíaca comum direita. É proposta angioplastia. Qual definição descreve corretamente o procedimento?",["Oclusão do vaso doente com molas metálicas para desviar o fluxo.","Criação de um enxerto venoso que contorne o segmento estenótico.","Infusão de contraste iodado para dissolver a placa de ateroma.","Dilatação da estenose por cateter-balão, com ou sem implante de stent."],3,"Angioplastia transluminal percutânea: dilatação da estenose com balão introduzido por cateter, muitas vezes seguida de stent. Molas ocluem (A); ponte é cirúrgica (B); contraste não dissolve placa (C)."],
+[1,8,"Homem de 70 anos, obeso, em uso de anticoagulante por fibrilação atrial e com <strong>doença aortoilíaca bilateral</strong>, fará angioplastia coronária eletiva. Qual via de acesso é a mais adequada?",["Artéria radial, pela menor taxa de sangramento no sítio.","Veia femoral, por dar acesso direto às coronárias.","Artéria carótida, pela proximidade anatômica com o coração.","Veia jugular interna, com progressão até a aorta ascendente."],0,"Angioplastia coronária é feita por via arterial, classicamente femoral ou radial. A radial tem menos sangramento, permite deambulação precoce e contorna a doença aortoilíaca. Vias venosas não chegam às coronárias (B, D)."],
+[1,8,"Ao montar a mesa para <strong>angioplastia coronária</strong>, o residente separa fio-guia, cateter-guia, cateter-balão, stent e um conjunto de <strong>molas (coils)</strong>. O preceptor corrige o kit. A orientação correta é:",["Molas são indispensáveis, pois mantêm a luz arterial aberta após o balão.","Molas não fazem parte da angioplastia; servem para ocluir vasos na embolização.","Molas substituem o stent em lesões longas, com menor risco de reestenose.","Molas devem ser liberadas antes do balão para prevenir dissecção da parede."],1,"Coils ocluem vasos (aneurismas, sangramentos, malformações). A angioplastia faz o oposto: reabre a luz com balão e stent. Por isso as molas não entram nesse kit."],
+[1,9,"Considere as etapas de uma angioplastia com stent: <strong>I</strong> insuflação do balão; <strong>II</strong> punção arterial (Seldinger) e introdutor; <strong>III</strong> angiografia de controle; <strong>IV</strong> passagem do fio-guia através da lesão; <strong>V</strong> liberação do stent; <strong>VI</strong> retirada do introdutor e hemostasia. A sequência correta é:",["II, I, IV, III, V, VI","II, IV, I, V, III, VI","II, III, I, IV, VI, V","IV, II, I, V, VI, III"],1,"Punção e introdutor → fio-guia cruza a lesão → balão dilata → stent é liberado → angiografia de controle confirma o resultado → retirada do introdutor e hemostasia."],
+[1,9,"Quatro horas após angioplastia por via femoral, paciente refere dor na virilha. Há <strong>massa pulsátil com sopro sistólico</strong>. O Doppler mostra coleção com fluxo turbilhonado em “yin-yang”, comunicando-se com a artéria por um colo. O diagnóstico é:",["Hematoma simples, sem comunicação com a luz arterial.","Pseudoaneurisma da artéria femoral no sítio de punção.","Trombose venosa profunda femoral pelo repouso prolongado.","Reação alérgica tardia ao contraste no local da punção."],1,"Massa pulsátil, sopro e fluxo em yin-yang com colo comunicante definem pseudoaneurisma, complicação clássica do sítio de punção. Hematoma simples não pulsa nem comunica com a artéria (A)."],
+[1,9,"Mulher de 59 anos recebe <strong>stent farmacológico</strong> na coronária direita por síndrome coronariana aguda. Sem contraindicações a antitrombóticos, recebe alta no dia seguinte. A prescrição que previne a principal complicação precoce do stent é:",["Anti-inflamatório não esteroide para prevenir a reestenose.","Varfarina isolada, com suspensão do AAS após a alta hospitalar.","AAS associado a inibidor P2Y12, como clopidogrel ou ticagrelor.","Nenhum antitrombótico, já que o stent é revestido por fármaco."],2,"Dupla antiagregação plaquetária (AAS + inibidor P2Y12) previne trombose do stent. O fármaco do stent é antiproliferativo, não antitrombótico (D)."],
+[1,10,"Homem de 76 anos com <strong>hemorragia digestiva baixa maciça</strong>, instável apesar de transfusão. A colonoscopia foi inconclusiva pelo volume de sangue. Opta-se por angiografia mesentérica. O motivo que melhor justifica essa escolha é que o exame:",["Dispensa contraste e acesso vascular, sendo não invasivo.","Localiza o sangramento e permite embolizá-lo no mesmo ato.","Avalia apenas a mucosa colônica, localizando lesões planas.","Identifica o sangramento usando radiação não ionizante."],1,"Sangramento ativo não localizado é indicação clássica: a angiografia mostra o extravasamento e permite embolização terapêutica no mesmo procedimento. É invasiva e usa raios X (A, D)."],
+[1,10,"Na angiografia digital da <strong>artéria mesentérica superior</strong>, a série mostra primeiro os ramos arteriais, depois um borramento difuso das alças intestinais e, por fim, a opacificação da veia mesentérica superior e da porta. As fases observadas, em ordem, são:",["Arterial, capilar (parenquimatosa) e venosa.","Venosa, capilar (parenquimatosa) e arterial.","Capilar (parenquimatosa), arterial e venosa.","Linfática, arterial (seletiva) e venosa."],0,"Após injeção arterial: fase arterial, fase capilar ou parenquimatosa (o blush das alças) e fase venosa (retorno pela mesentérica superior e porta)."],
+[1,10,"Jovem de 24 anos com cefaleia e crise convulsiva tem <strong>suspeita de malformação arteriovenosa cerebral</strong>; a angiotomografia é duvidosa. O neurorradiologista indica angiografia digital. Qual vantagem justifica o exame invasivo?",["Ausência de radiação ionizante e de contraste.","Estudo dinâmico do fluxo, com opção de tratar.","Menor custo e nenhuma possibilidade de complicação.","Dispensa de preparo, consentimento e monitorização."],1,"A angiografia digital mostra a dinâmica do fluxo (artérias nutridoras, nidus, drenagem venosa precoce) e permite embolização no mesmo tempo. Tem radiação, contraste e riscos (A, C)."],
+[1,11,"Homem de 64 anos volta com angina 8 meses após receber <strong>stent metálico convencional</strong>. O cateterismo mostra reestenose intra-stent por hiperplasia neointimal. Qual dispositivo é o mais indicado na reintervenção, e por quê?",["Novo stent convencional, pois libera antiproliferativo na parede.","Novo stent convencional, pois tem menor espessura e é absorvível.","Stent farmacológico, pois dispensa a dupla antiagregação plaquetária.","Stent farmacológico, que libera antiproliferativo e reduz a reestenose."],3,"O stent farmacológico libera droga antiproliferativa (sirolimus, everolimus), inibindo a hiperplasia neointimal. O convencional é só suporte metálico (A). O farmacológico ainda exige dupla antiagregação (C)."],
+[1,11,"Paciente precisa de stent coronariano, mas tem <strong>cirurgia oncológica inadiável em poucas semanas</strong>, que exigirá suspender a antiagregação. Segundo o ensino clássico sobre stent convencional × farmacológico, qual consideração é correta?",["O farmacológico é preferível, pois dispensa antiagregação após a cirurgia.","O convencional libera fármaco que protege contra trombose sem antiagregação.","Os dois têm o mesmo mecanismo e exigem igual tempo de antiagregação.","O convencional tende a exigir dupla antiagregação por período mais curto."],3,"No ensino clássico, o stent convencional exige dupla antiagregação mais curta; o farmacológico, mais prolongada pelo risco de trombose tardia. Protocolos atuais encurtaram esse tempo — a decisão é individualizada com o heart team."],
+[1,11,"Homem de 68 anos chega com hemiplegia direita e afasia há 3 horas, NIHSS 18. A angiotomografia mostra <strong>oclusão do segmento M1 da artéria cerebral média esquerda</strong>. Qual uso de stent em neurointervenção se aplica a esse caso?",["Trombectomia mecânica com stent retriever para recanalizar a artéria.","Stent farmacológico coronariano implantado de forma permanente na ACM.","Injeção intra-arterial de PMMA para estabilizar o trombo.","Angiografia com CO₂ para dissolver o trombo pelo efeito do gás."],0,"No AVC isquêmico de grande vaso, o stent retriever captura e remove o trombo. Outros usos neuro: angioplastia carotídea, coiling assistido e diversores de fluxo em aneurismas. CO₂ intracraniano é contraindicado (D)."],
+[2,12,"Na aula prática, o residente deve classificar: <strong>sulfato de bário, contraste iodado não iônico, CO₂, ar ambiente e tecnécio-99m</strong>. A classificação correta é:",["Todos são contrastes positivos, pois aumentam a atenuação dos raios X.","Bário e CO₂ são positivos; iodo e ar, negativos; tecnécio é neutro.","Bário e iodo são positivos; CO₂ e ar, negativos; tecnécio é radiofármaco.","Tecnécio-99m é contraste positivo, por emitir radiação visível ao raio X."],2,"Positivos (radiopacos): iodados e bário. Negativos (radiotransparentes): ar e CO₂. Tecnécio-99m é radiofármaco da medicina nuclear — não confundir com contraste radiológico."],
+[2,12,"Na imagem angiográfica <strong>sem subtração</strong>, a aorta aparece intensamente branca logo após a injeção de contraste iodado. Qual propriedade explica esse comportamento de contraste positivo?",["O iodo tem baixo número atômico e deixa passar mais fótons.","O iodo tem alto número atômico e atenua mais os raios X.","O iodo é paramagnético e altera o campo do detector.","O iodo reduz a densidade do sangue, que fica radiotransparente."],1,"Alto número atômico → mais absorção de raios X (efeito fotoelétrico) → estrutura radiopaca (branca). Paramagnetismo é do gadolínio, usado em ressonância (C)."],
+[2,12,"Paciente fará <strong>cintilografia de perfusão miocárdica</strong> na segunda-feira e <strong>cateterismo</strong> na quinta. Preocupado, pergunta se vai “receber o mesmo contraste duas vezes”. A resposta correta é:",["Não: o cateterismo usa contraste iodado; a cintilografia, radiofármaco.","Sim, ambos utilizam iodo radioativo como contraste positivo.","Não: o cateterismo usa radiofármaco; a cintilografia, contraste baritado.","Não: ambos dispensam substâncias, usando só radiação externa."],0,"O cateterismo usa contraste iodado, que atenua os raios X. A cintilografia usa radiofármaco, que emite radiação captada pela gama-câmara. São classes diferentes."],
+[2,13,"Homem de 72 anos, diabético em uso de <strong>metformina</strong>, TFG de 25 mL/min, com história de <strong>urticária generalizada e broncoespasmo</strong> após TC contrastada. Precisa de arteriografia de membros inferiores eletiva. A conduta mais adequada é:",["Usar contraste iodado em dose dobrada, com hidratação apenas posterior.","Realizar o exame com bário diluído por via intra-arterial.","Usar ar ambiente intra-arterial, alternativa isenta de riscos.","Evitar o iodo e considerar CO₂ no território infradiafragmático."],3,"Reação grave prévia, insuficiência renal e metformina contraindicam o iodo. Abaixo do diafragma, o CO₂ é alternativa. Ar intravascular causa embolia (C); bário nunca é intravascular (B)."],
+[2,13,"Paciente alérgico a iodo e renal crônico precisa estudar o <strong>arco aórtico e as carótidas</strong>. O residente sugere angiografia com CO₂. Avalie a proposta:",["Adequada, pois o CO₂ é seguro em qualquer território arterial.","Inadequada, pois o CO₂ é nefrotóxico e alergênico.","Inadequada, pois o CO₂ é radiopaco e mascara a placa.","Inadequada, pois CO₂ acima do diafragma pode ser neurotóxico."],3,"CO₂ é contraindicado acima do diafragma (arco, carótidas, circulação cerebral, coronárias) pelo risco de neurotoxicidade e isquemia por bolhas. Não é nefrotóxico nem alergênico (B) e é radiotransparente (C)."],
+[2,13,"Candidato a arteriografia de membros inferiores com CO₂ apresenta cinco dados na avaliação pré-procedimento. Qual deles <strong>contraindica o uso do contraste negativo</strong>?",["Insuficiência renal crônica em estágio 4.","Hipertireoidismo em tratamento com metimazol.","Alergia grave prévia ao contraste iodado.","Shunt direita-esquerda (forame oval patente)."],3,"Shunt direita-esquerda deixa as bolhas passarem para a circulação sistêmica e cerebral. Insuficiência renal, alergia ao iodo, metformina e hipertireoidismo são, ao contrário, motivos para preferir CO₂ ao iodo."],
+[2,14,"Na arteriografia com CO₂ de paciente em decúbito dorsal, o técnico nota que os <strong>ramos posteriores ficam mal opacificados</strong> e que o exame só é interpretável na subtração digital. Quais características do contraste negativo explicam isso?",["É radiotransparente e flutua, enchendo mais as porções anteriores do vaso.","É radiopaco e pesado, depositando-se nas porções posteriores do vaso.","É radiotransparente e lipossolúvel, acumulando-se no tecido adiposo.","É radiotransparente e de excreção renal, exigindo hidratação vigorosa."],0,"O CO₂ é radiotransparente (por isso a DSA) e menos denso que o sangue: flutua e preenche as porções anteriores, não dependentes. É eliminado pelos pulmões, não pelos rins (D)."],
+[2,14,"Mulher de 69 anos com insuficiência renal estágio 4 e anafilaxia prévia ao iodo tem <strong>estenose da artéria femoral superficial</strong>. A equipe opta por CO₂ para guiar a angioplastia. A principal justificativa é:",["Ausência de nefrotoxicidade e de reações alérgicas.","Opacificação positiva, dispensando a subtração digital.","Longa permanência intravascular, útil em exames demorados.","Maior resolução espacial que o iodo nos vasos intracranianos."],0,"CO₂: sem nefrotoxicidade, sem alergia, barato e de baixa viscosidade, absorvido e eliminado pelos pulmões. É contraindicado no território intracraniano (D), exige DSA (B) e permanece pouco tempo no vaso (C)."],
+[2,15,"Mulher de 74 anos, osteoporótica, com <strong>fratura por compressão de T12</strong> há 4 semanas, dor refratária a analgésicos, sem déficit neurológico. A RM mostra edema medular no corpo vertebral. Qual procedimento intervencionista utiliza PMMA nesse caso?",["Embolização arterial com PMMA para reduzir o edema vertebral.","Vertebroplastia percutânea, com injeção de cimento no corpo vertebral.","Angioplastia da artéria de Adamkiewicz com balão revestido de PMMA.","Infiltração epidural de corticoide usando PMMA como veículo."],1,"O PMMA é o cimento ósseo da vertebroplastia e da cifoplastia: fraturas osteoporóticas dolorosas, metástases e hemangiomas vertebrais. Não é agente de embolização vascular nem veículo de fármacos."],
+[2,15,"Durante vertebroplastia em três níveis, logo após a injeção do cimento, o paciente evolui com <strong>hipotensão súbita, SpO₂ de 82%, arritmia e rebaixamento</strong> do nível de consciência. A hipótese mais provável é:",["Reação vasovagal à dor da punção, sem relação com o material.","Nefropatia induzida por contraste de instalação imediata.","Síndrome de implantação do cimento ósseo (síndrome do PMMA).","Síndrome serotoninérgica causada pela sedação endovenosa."],2,"Hipotensão, hipoxemia, arritmia e rebaixamento logo após o cimento definem a síndrome de implantação do cimento ósseo: embolia de cimento, gordura e medula, somada ao efeito do monômero. Pode evoluir para parada."],
+[2,15,"Um serviço revisa seu protocolo de vertebroplastia após um caso de embolia pulmonar por cimento. Qual medida <strong>reduz</strong> o risco dessa complicação?",["Injetar grande volume rapidamente, antes que o cimento polimerize.","Injetar devagar sob fluoroscopia e parar se houver extravasamento.","Usar cimento bem líquido para facilitar a difusão venosa.","Tratar muitos níveis na mesma sessão, evitando novas punções."],1,"Injeção lenta, cimento de viscosidade adequada e controle fluoroscópico contínuo, interrompendo ao primeiro extravasamento, reduzem embolia e compressão neural. Volume alto, cimento líquido e muitos níveis aumentam o risco."],
+[3,16,"Técnico recém-contratado recebe o treinamento no <strong>arco cirúrgico em C</strong>. O instrutor aponta as duas extremidades do “C” e pergunta de onde sai o feixe de raios X. A resposta correta é:",["Do detector flat panel, que emite e também capta os raios X.","Do intensificador de imagem, posicionado acima do paciente.","Do tubo de raios X (ampola), oposto ao intensificador ou detector.","Do colimador, que produz os raios X e depois os filtra."],2,"O arco tem o tubo (ampola, com colimador) numa extremidade e o intensificador ou flat panel na oposta; o paciente fica no meio. O raio X sai do tubo; o colimador só delimita o feixe (D)."],
+[3,16,"Em auditoria dosimétrica, o intervencionista tem <strong>dose elevada no cristalino</strong>. Nas filmagens, o arco trabalha com o tubo acima da mesa e o detector afastado do paciente. Qual conformação deve ser adotada?",["Tubo acima da mesa e detector afastado do paciente.","Tubo próximo à pele e detector o mais longe possível.","Tubo sob a mesa e detector o mais próximo do paciente.","Tubo e detector do mesmo lado, voltados ao operador."],2,"Com o tubo sob a mesa, a radiação espalhada se concentra embaixo, longe dos olhos. Detector próximo ao paciente reduz dose e melhora a imagem."],
+[3,16,"Em angiografia renal, a imagem mostra <strong>campo muito aberto, incluindo a tireoide</strong> e boa parte do tórax, com contraste ruim. Qual componente do arco deve ser ajustado para restringir o feixe à área de interesse?",["O colimador, limitando o feixe à região estudada.","O pedal, acionado de modo contínuo e prolongado.","O intensificador, afastado ao máximo do paciente.","O monitor, reduzindo o brilho da imagem exibida."],0,"O colimador, junto ao tubo, delimita o feixe: reduz a dose ao paciente, a radiação espalhada e melhora o contraste da imagem."],
+[3,17,"Uma clínica passa a oferecer <strong>angiografia de rotina para “check-up”</strong> em adultos assintomáticos, sem indicação clínica. Qual princípio de proteção radiológica é violado em primeiro lugar?",["Limitação de dose: respeitar os limites ocupacionais anuais.","Justificação: o benefício deve superar o risco da exposição.","Blindagem: interpor barreiras entre fonte e trabalhador.","Distância: afastar-se da fonte para reduzir a exposição."],1,"Justificação vem antes de tudo: nenhuma exposição sem benefício que a supere. Sem indicação, discutir otimização ou limitação é secundário."],
+[3,17,"Durante a aquisição angiográfica, a enfermeira que estava a <strong>50 cm do paciente</strong> se afasta para <strong>1 metro</strong>. Qual o efeito esperado sobre sua exposição à radiação espalhada?",["Redução à metade, pois a relação com a distância é linear.","Redução a cerca de um quarto, pela lei do inverso do quadrado.","Nenhuma, pois a radiação espalhada não varia com a distância.","Redução a zero, pois a radiação não ultrapassa 1 metro."],1,"Lei do inverso do quadrado: dobrar a distância reduz a intensidade a 1/4. A distância reduz, mas não zera a exposição (D)."],
+[3,17,"Embolização complexa prevista para mais de uma hora. O físico médico pede que a equipe aplique o princípio <strong>ALARA</strong>. Qual conjunto de medidas atende a esse pedido?",["Fluoroscopia contínua em alta taxa, com campo amplo aberto.","Magnificação eletrônica constante para melhor visualização.","Mais tempo de pedal para evitar aquisições repetidas.","Fluoroscopia pulsada, colimação e uso da última imagem gravada."],3,"Otimização: fluoroscopia pulsada de baixa taxa, colimação, last image hold, pouca magnificação, detector próximo e tubo longe do paciente."],
+[3,18,"Intervencionista de 52 anos, com 20 anos de embolizações diárias, é diagnosticado com <strong>opacidade subcapsular posterior do cristalino</strong>. Qual EPI, usado de forma consistente, teria reduzido esse dano?",["Dosímetro individual sob o avental.","Máscara de proteção respiratória N95.","Óculos plumbíferos com proteção lateral.","Propé descartável antiderrapante."],2,"Catarata subcapsular posterior é efeito da radiação no cristalino; o EPI específico são os óculos plumbíferos com proteção lateral. O dosímetro mede a dose, não protege (A)."],
+[3,18,"A coordenadora de enfermagem prepara a escala de uma sala de hemodinâmica. Qual conjunto de <strong>EPIs é essencial</strong> para quem permanece na sala durante a fluoroscopia?",["Avental plumbífero, protetor de tireoide, óculos de chumbo e dosímetro.","Protetor de tireoide apenas para o médico, sem EPI para os demais.","Avental de algodão, luvas de látex, touca e máscara descartáveis.","Luvas plumbíferas dentro do feixe primário, dispensando o avental."],0,"Kit essencial: avental plumbífero, protetor de tireoide, óculos plumbíferos e dosímetro individual, para toda a equipe na sala. Luvas plumbíferas no feixe aumentam a dose pelo controle automático e não substituem o avental (D)."],
+[3,19,"Três semanas após embolização prolongada (90 minutos de fluoroscopia, dose estimada de pele acima de 5 Gy), o paciente apresenta <strong>eritema e descamação no dorso</strong>, exatamente na área de entrada do feixe. O diagnóstico é:",["Dermatite de contato ao antisséptico degermante.","Herpes-zóster desencadeado pelo estresse do procedimento.","Efeito estocástico, cujo risco independe da dose.","Radiodermite, efeito determinístico da radiação."],3,"Lesão na área do feixe após alta dose de pele é radiodermite, efeito determinístico: tem limiar e gravidade proporcional à dose. Efeitos estocásticos não têm limiar e se manifestam como câncer (C)."],
+[3,19,"Homem de 68 anos, desidratado, com creatinina basal de 1,3 mg/dL, recebe 250 mL de contraste iodado em angioplastia periférica. Em 48 horas, a creatinina sobe para 2,1 mg/dL. Qual o diagnóstico e a prevenção adequada?",["Síndrome do PMMA; suspensão do cimento e uso de corticoide sistêmico.","Nefropatia por contraste; hidratação prévia e menor volume de iodo.","Radiodermite renal; uso de avental plumbífero sobre o paciente.","Embolia gasosa renal; substituição do iodo por ar ambiente."],1,"Aumento de creatinina em 48–72 h após iodo, em doente renal e desidratado, é nefropatia induzida por contraste. Prevenção: hidratação, menor volume, contraste de baixa ou iso-osmolaridade e alternativas quando possível."],
+[3,20,"Seis horas após angioplastia por punção femoral <strong>acima do ligamento inguinal</strong>, a paciente tem dor lombar, taquicardia, hipotensão e queda de 3 g/dL na hemoglobina, sem hematoma visível na virilha. A principal suspeita é:",["Pseudoaneurisma superficial facilmente palpável na virilha.","Nefropatia induzida por contraste de instalação hiperaguda.","Reação vasovagal benigna, sem necessidade de investigação.","Hematoma retroperitoneal pela punção arterial alta."],3,"Punção acima do ligamento inguinal sangra para o retroperitônio: dor lombar ou no flanco, instabilidade e queda de hemoglobina sem hematoma visível. Confirma-se com TC."],
+[3,20,"Durante angioplastia coronária, após insuflar o balão, a angiografia mostra <strong>linha radiotransparente longitudinal com retenção de contraste fora da luz</strong>, e o paciente refere dor torácica. Qual é a complicação e a conduta imediata?",["Dissecção coronária; implante de stent para cobrir o flap.","Embolia gasosa; injeção imediata de CO₂ para deslocá-la.","Reestenose tardia; alta com dupla antiagregação apenas.","Espasmo por contraste negativo; retirada do fio-guia."],0,"Flap com contraste retido fora da luz após o balão indica dissecção. A conduta é selar o flap com stent. É um risco inerente à intervenção, ao lado de perfuração, trombose e embolização distal."]];
+
+const L="ABCD";
+const KEY="ri50-state-v2";
+let state={ans:{},mode:"study",done:false,filter:-1};
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&s.ans)state=Object.assign(state,s)}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+
+const list=document.getElementById("list"),map=document.getElementById("map"),tabs=document.getElementById("tabs");
+const modeSel=document.getElementById("mode");modeSel.value=state.mode;
+
+function revealed(){return state.mode==="study"||state.done}
+
+function build(){
+  // tabs
+  tabs.innerHTML="";
+  [["Todas",-1]].concat(MODULES.map((m,i)=>["Módulo "+(i+1),i])).forEach(([n,i])=>{
+    const b=document.createElement("button");b.className="tab";b.textContent=n;
+    b.setAttribute("aria-pressed",state.filter===i);
+    b.onclick=()=>{state.filter=i;save();build()};
+    tabs.appendChild(b);
+  });
+  list.innerHTML="";map.innerHTML="";
+  let lastM=-1;
+  Q.forEach((q,idx)=>{
+    const [m,t,stem,opts,ans,com]=q;
+    const a=document.createElement("a");a.href="#q"+(idx+1);a.textContent=idx+1;a.id="m"+idx;
+    a.setAttribute("aria-label","Questão "+(idx+1));
+    map.appendChild(a);
+    if(state.filter!==-1&&state.filter!==m)return;
+    if(m!==lastM){const h=document.createElement("h2");h.className="module-title";h.textContent="Módulo "+(m+1);list.appendChild(h);lastM=m}
+    const art=document.createElement("article");art.className="q";art.id="q"+(idx+1);
+    art.innerHTML='<div class="q-head"><span class="q-num">Questão '+(idx+1)+'</span></div><p class="stem">'+stem+'</p>';
+    const ul=document.createElement("ul");ul.className="opts";
+    opts.forEach((o,k)=>{
+      const li=document.createElement("li");const b=document.createElement("button");b.className="opt";b.dataset.k=k;
+      b.innerHTML='<span class="l">'+L[k]+'</span><span>'+o+'</span>';
+      b.onclick=()=>pick(idx,k);
+      li.appendChild(b);ul.appendChild(li);
+    });
+    art.appendChild(ul);
+    const fb=document.createElement("div");fb.className="fb";fb.setAttribute("aria-live","polite");art.appendChild(fb);
+    list.appendChild(art);
+    paint(idx);
+  });
+  Q.forEach((_,i)=>paintMap(i));
+  stats();
+}
+
+function paint(idx){
+  const art=document.getElementById("q"+(idx+1));if(!art)return;
+  const q=Q[idx],sel=state.ans[idx],show=revealed()&&sel!==undefined;
+  art.querySelectorAll(".opt").forEach(b=>{
+    const k=+b.dataset.k;b.className="opt";
+    b.setAttribute("aria-pressed",sel===k);
+    if(show){b.disabled=true;if(k===q[4])b.classList.add("right");else if(k===sel)b.classList.add("wrong")}
+    else{b.disabled=state.done;if(k===sel)b.classList.add("picked")}
+  });
+  const fb=art.querySelector(".fb");
+  if(show){
+    const ok=sel===q[4];
+    fb.innerHTML='<b class="'+(ok?"verdict-ok":"verdict-bad")+'">'+(ok?"Correta.":"Incorreta — gabarito: "+L[q[4]]+".")+'</b> '+q[5];
+    fb.classList.add("show");
+  }else{fb.classList.remove("show");fb.innerHTML=""}
+}
+function paintMap(i){
+  const a=document.getElementById("m"+i),sel=state.ans[i];a.className="";
+  if(sel===undefined)return;
+  if(revealed())a.classList.add(sel===Q[i][4]?"ok":"bad");else a.classList.add("answered");
+}
+function pick(idx,k){
+  if(state.done)return;
+  if(state.mode==="study"&&state.ans[idx]!==undefined)return;
+  state.ans[idx]=k;save();paint(idx);paintMap(idx);stats();
+}
+function stats(){
+  const keys=Object.keys(state.ans),n=keys.length;
+  const ok=keys.filter(i=>state.ans[i]===Q[i][4]).length;
+  document.getElementById("sAns").textContent=n;
+  document.getElementById("sOk").textContent=revealed()?ok:"–";
+  document.getElementById("sPct").textContent=revealed()&&n?Math.round(ok/n*100)+"%":"–";
+  document.getElementById("sBar").style.width=(n/50*100)+"%";
+  document.getElementById("finish").style.display=state.mode==="exam"&&!state.done?"":"none";
+  renderResult();
+}
+function renderResult(){
+  const r=document.getElementById("result");
+  const n=Object.keys(state.ans).length;
+  if(!(revealed()&&(n===50||state.done))){r.classList.remove("show");r.innerHTML="";return}
+  let rows="";let tot=0;
+  MODULES.forEach((m,i)=>{
+    const idx=Q.map((q,j)=>q[0]===i?j:-1).filter(j=>j>=0);
+    const ok=idx.filter(j=>state.ans[j]===Q[j][4]).length;tot+=ok;
+    rows+="<tr><td>Módulo "+(i+1)+"</td><td>"+ok+"/"+idx.length+"</td></tr>";
+  });
+  const miss=Q.map((q,j)=>state.ans[j]!==q[4]?j:-1).filter(j=>j>=0);
+  const topics=miss.map(j=>j+1);
+  r.innerHTML="<h2>Resultado: "+tot+"/50</h2><p>"+(topics.length?"Revise as questões: "+topics.join(", ")+".":"Nenhuma questão a revisar.")+"</p><div class='scroll'><table><thead><tr><th>Módulo</th><th>Acertos</th></tr></thead><tbody>"+rows+"</tbody></table></div>";
+  r.classList.add("show");
+}
+modeSel.onchange=()=>{state.mode=modeSel.value;state.done=false;save();build()};
+document.getElementById("finish").onclick=()=>{
+  const n=Object.keys(state.ans).length;
+  if(n<50&&!confirm("Faltam "+(50-n)+" questões. Corrigir mesmo assim?"))return;
+  state.done=true;save();build();document.getElementById("result").scrollIntoView({behavior:"smooth"});
+};
+document.getElementById("reset").onclick=()=>{
+  if(!confirm("Apagar todas as respostas e recomeçar?"))return;
+  state.ans={};state.done=false;save();build();window.scrollTo(0,0);
+};
+build();
+</script>
+</body>
+</html>
